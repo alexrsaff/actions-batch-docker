@@ -61,13 +61,15 @@ const buildThenDeploy = (registry, shouldDeploy, imageTags) => async (dockerfile
     outStream,
     errStream,
   }));
+  console.log('Built images.');
   if (buildError) throw new Error(`Could not build image '${gitSHA}' from dockerfile '${dockerfile}' with additional tags '${imageTags}'.`);
-
+  console.log('No error thrown');
   if (!shouldDeploy) return undefined;
-
+  console.log('Checked should deploy');
   const [deployError] = try$(exec('docker', ['push', '-a', imageName], { outStream, errStream }));
+  console.log('Pushed images.');
   if (deployError) throw new Error(`Could not deploy one or more of '${imageTags}'`);
-
+  console.log('No deploy error thrown.');
   return undefined;
 };
 
